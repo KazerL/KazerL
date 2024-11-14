@@ -54,5 +54,8 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v3
 
+      - name: Make deploy.sh executable
+        run: chmod +x ./deploy.sh
+
       - name: Deploy Application
         run: ./deploy.sh
