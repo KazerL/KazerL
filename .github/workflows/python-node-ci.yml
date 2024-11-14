@@ -1,11 +1,10 @@
-name: Python and Node.js CI Pipeline
+name: CI/CD Pipeline
 
 on: 
-  push:       # Triggers on any push to any branch
-  pull_request:  # Triggers on any pull request to any branch
+  push:
+  pull_request:
 
 jobs:
-  # Python Unit Testing
   python-tests:
     name: Python Unit Testing
     runs-on: ubuntu-latest
@@ -27,7 +26,6 @@ jobs:
       - name: Run Python Unit Tests
         run: pytest --junitxml=pytest-results.xml
 
-  # Node.js Unit Testing
   nodejs-tests:
     name: Node.js Unit Testing
     runs-on: ubuntu-latest
@@ -45,12 +43,11 @@ jobs:
         run: npm install
 
       - name: Run Node.js Unit Tests
-        run: npm test  # Assumes test script is defined in package.json
+        run: npm test
 
-  # Deployment Step (Optional)
   deploy:
     name: Deploy to Staging
-    needs: [python-tests, nodejs-tests]  # Runs only if tests pass for both Python and Node.js
+    needs: [python-tests, nodejs-tests]
     runs-on: ubuntu-latest
 
     steps:
@@ -58,4 +55,4 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Deploy Application
-        run: ./deploy.sh  # Replace with actual deployment script or commands
+        run: ./deploy.sh
