@@ -1,0 +1,61 @@
+name: Python and Node.js CI Pipeline
+
+on: 
+  push:       # Triggers on any push to any branch
+  pull_request:  # Triggers on any pull request to any branch
+
+jobs:
+  # Python Unit Testing
+  python-tests:
+    name: Python Unit Testing
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.x'
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Python Unit Tests
+        run: pytest --junitxml=pytest-results.xml
+
+  # Node.js Unit Testing
+  nodejs-tests:
+    name: Node.js Unit Testing
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+
+      - name: Install Node.js dependencies
+        run: npm install
+
+      - name: Run Node.js Unit Tests
+        run: npm test  # Assumes test script is defined in package.json
+
+  # Deployment Step (Optional)
+  deploy:
+    name: Deploy to Staging
+    needs: [python-tests, nodejs-tests]  # Runs only if tests pass for both Python and Node.js
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Deploy Application
+        run: ./deploy.sh  # Replace with actual deployment script or commands
