@@ -42,9 +42,9 @@ jobs:
           # Run Node.js integration tests if any (example command)
           npm run test:integration || echo "No Node.js integration tests found."
 
-    # Optionally, upload integration test results
-    - name: Upload Test Results
-      uses: actions/upload-artifact@v3
-      with:
-        name: integration-test-results
-        path: integration-test-results.xml  # Adjust path based on output files
+      # Optionally, upload integration test results
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v3
+        with:
+          name: integration-test-results
+          path: integration-test-results.xml  # Adjust path based on output files
